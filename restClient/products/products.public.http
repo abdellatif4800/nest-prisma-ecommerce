@@ -1,0 +1,15 @@
+### 
+
+@base = http://localhost:8000/api
+
+
+### Find Products
+
+GET {{base}}/products HTTP/1.1
+Content-Type: application/json
+
+
+### Find Variants
+
+GET {{base}}/products/variants?productId=cd2a4872-0a5c-4b9d-b370-142fe7ae8862 HTTP/1.1
+Content-Type: application/json

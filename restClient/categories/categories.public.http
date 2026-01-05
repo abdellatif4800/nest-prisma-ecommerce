@@ -1,0 +1,33 @@
+### 
+
+@base = http://localhost:8000/api
+
+
+### Find All Categories
+
+GET {{base}}/categories HTTP/1.1
+Content-Type: application/json
+
+
+### Find Category by ID
+
+GET {{base}}/categories/a2075e8e-2d69-45fb-bf80-7bd450cd58e2 HTTP/1.1
+Content-Type: application/json
+
+
+### Find All SubCategories
+
+GET {{base}}/categories/subcategories HTTP/1.1
+Content-Type: application/json
+
+
+### Find SubCategory by ID
+
+GET {{base}}/categories/subcategories/5de63290-709f-4c0e-93e6-0e014e249c92 HTTP/1.1
+Content-Type: application/json
+
+
+### Find SubCategories by Category
+
+GET {{base}}/categories/a2075e8e-2d69-45fb-bf80-7bd450cd58e2/subcategories HTTP/1.1
+Content-Type: application/json

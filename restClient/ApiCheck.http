@@ -1,0 +1,52 @@
+### 
+
+@adminBase = http://localhost:8001/adminApi
+@base = http://localhost:8000/api
+
+
+### API
+
+
+### Ping
+
+GET {{base}}/health/ping HTTP/1.1
+Accept: application/json
+
+
+### ApiCheck
+
+GET {{base}}/health/apiCheck HTTP/1.1
+Accept: application/json
+
+
+### PrismaCheck
+
+GET {{base}}/health/prismaCheck HTTP/1.1
+Accept: application/json
+
+
+### 
+
+
+### ADMIN_API
+
+
+### Ping
+
+GET {{adminBase}}/health/ping HTTP/1.1
+Accept: application/json
+
+
+### AdminApiCheck
+
+GET {{adminBase}}/health/apiCheck HTTP/1.1
+Accept: application/json
+
+
+### 
+
+
+### PrismaCheck
+
+GET {{adminBase}}/health/prismaCheck HTTP/1.1
+Accept: application/json

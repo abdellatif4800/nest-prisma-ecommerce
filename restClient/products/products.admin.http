@@ -1,0 +1,56 @@
+### 
+
+@base = http://localhost:8001/adminApi
+
+
+### Create Product
+
+POST {{base}}/products HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "discount": 70,
+  "imageUrl": "https://example.com/iphone15.jpg",
+  "price": 2500,
+  "productName": "prod3",
+  "subCategoryId": "0ba38dcc-e47e-4b0d-b139-45b9a1e33aa1"
+}
+
+
+### Update Product
+
+PATCH {{base}}/products/e7408523-59fd-49e0-9c3d-8576270ffb40 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "discount": 60,
+  "publish": true
+}
+
+
+### Create Variant
+
+POST {{base}}/products/variants HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "color": "Red",
+  "price": 1500,
+  "productId": "cd2a4872-0a5c-4b9d-b370-142fe7ae8862",
+  "size": "228GB",
+  "stock": 50
+}
+
+
+### Update Variant
+
+PATCH {{base}}/products/variants/407521d0-f6a7-4222-a395-e4633830caa3 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "color": "Blue"
+}

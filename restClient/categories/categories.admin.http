@@ -1,0 +1,51 @@
+### 
+
+@base = http://localhost:8001/adminApi
+
+
+### Create Category
+
+POST {{base}}/categories HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "category": "Electronics"
+}
+
+
+### Create SubCategory
+
+POST {{base}}/categories/subcategories HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "categoryId": "ffeaf190-cb8a-4c17-9539-22b623276978",
+  "subCategory": "subCat 1"
+}
+
+
+### Update Category
+
+PATCH {{base}}/categories/a2075e8e-2d69-45fb-bf80-7bd450cd58e2 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "category": "Electronics & Gadgets123213"
+}
+
+
+### Update SubCategory
+
+PATCH {{base}}/categories/subcategories/5de63290-709f-4c0e-93e6-0e014e249c92 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "subCategory": "Smartphones & Tablets12321321"
+}
+
+
+### 

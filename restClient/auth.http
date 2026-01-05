@@ -1,0 +1,79 @@
+### 
+
+@adminBase = http://localhost:8001/adminApi
+@base = http://localhost:8000/api
+
+
+### Registration
+
+POST {{base}}/auth/registration HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "test101121231311232@example.com",
+  "password": "qweasdzxc123",
+  "username": "test101"
+}
+
+
+### Login
+
+POST {{base}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "test10112@example.com",
+  "password": "qweasdzxc123"
+}
+
+> {%
+  client.global.set('user_token', response.body.access_token);
+  // client.log(client.global.get('token'));
+%}
+
+
+### ADMIN
+
+
+### Registration
+
+POST {{adminBase}}/auth/registration HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "testAdmin101@example.com",
+  "password": "qweasdzxc123",
+  "role": "admin",
+  "username": "test101"
+}
+
+
+### LOGIN as user in admin site to check RBAC
+
+POST {{adminBase}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "test10112@example.com",
+  "password": "qweasdzxc123"
+}
+
+> {%
+  client.global.set('admin_token', response.body.access_token);
+  // client.log(client.global.get('token'));
+%}
+
+
+### Login as admin
+
+POST {{adminBase}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "testAdmin101@example.com",
+  "password": "qweasdzxc123"
+}
+
+> {%
+  client.global.set('admin_token', response.body.access_token);
+%}
