@@ -1,0 +1,63 @@
+// --------------------------------------
+// Product & Category Models
+// --------------------------------------
+
+model Product {
+  id          String  @id @default(uuid())
+  productName String
+  price       Float
+  discount    Float?
+  rate        Float?
+  imageUrl    String?
+  publish     Boolean @default(false)
+  
+  // Relations
+  subCategoryId String
+  subCategory   SubCategory @relation(fields: [subCategoryId], references: [id])
+
+  variants   ProductVariant[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt
+
+  @@map("Product")
+}
+
+model ProductVariant{
+  id        String  @id @default(uuid())
+
+  color     String
+  size      String
+  stock     Int
+  price     Float? // optional override price per variant
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+
+  @@unique([productId, color, size]) // 🚨 prevent duplicate variants
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  category  String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  subCategories SubCategory[]
+
+  @@map("Categories")
+}
+
+model SubCategory {
+  id          String   @id @default(uuid())
+  subCategory String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  categoryId String
+  category   Category  @relation(fields: [categoryId], references: [id])
+  products   Product[]
+
+  @@map("SubCategories")
+}
