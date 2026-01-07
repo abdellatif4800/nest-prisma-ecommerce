@@ -28,6 +28,12 @@
       "apiLibs/auth/*": [
         "libs/auth/src/*"
       ],
+      "apiLibs/cart-management": [
+        "libs/cart-management/src"
+      ],
+      "apiLibs/cart-management/*": [
+        "libs/cart-management/src/*"
+      ],
       "apiLibs/categories": [
         "libs/categories/src"
       ],
@@ -39,6 +45,12 @@
       ],
       "apiLibs/common/*": [
         "libs/common/src/*"
+      ],
+      "apiLibs/order-management": [
+        "libs/order-management/src"
+      ],
+      "apiLibs/order-management/*": [
+        "libs/order-management/src/*"
       ],
       "apiLibs/prisma-setup": [
         "libs/prisma-setup/src"

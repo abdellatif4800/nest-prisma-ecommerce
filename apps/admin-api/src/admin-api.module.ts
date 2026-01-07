@@ -12,14 +12,16 @@ import { ProductsModule } from 'apiLibs/products';
 import { HealthModule } from './healthCheck/health.module';
 import { AuthGuard, RoleGuard } from 'apiLibs/common';
 import { APP_GUARD } from '@nestjs/core';
+import { CartManagementModule } from 'apiLibs/cart-management';
 
 @Module({
   imports: [
     HealthModule,
-    AuthModule,
     PrismaSetupModule,
+    AuthModule.register('admin'),
     ProductsModule.register('admin'),
     CategoriesModule.register('admin'),
+    CartManagementModule.register('admin'),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

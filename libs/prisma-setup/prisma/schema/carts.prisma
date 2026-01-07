@@ -16,7 +16,6 @@ model Cart {
   @@map("Cart")
 }
 
-// Converted from "type" to "model" for Postgres
 model CartItem {
   id     String @id @default(uuid())
   cartId String
@@ -25,8 +24,8 @@ model CartItem {
   variantId String
   variant   ProductVariant @relation(fields: [variantId], references: [id])
 
-  quantity Int
-  price    Float // Snapshot price
+   quantity Int
 
-  @@map("CartItems")
+   @@unique([cartId, variantId])
+   @@map("CartItems")
 }

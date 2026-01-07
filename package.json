@@ -9,7 +9,6 @@
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
-
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/api/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -17,12 +16,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/api/test/jest-e2e.json",        
-
+    "test:e2e": "jest --config ./apps/api/test/jest-e2e.json",
     "dev:adminApi": "NODE_OPTIONS='--max-old-space-size=512' nest start --watch admin-api",
     "dev:publicApi": "NODE_OPTIONS='--max-old-space-size=512' nest start --watch api",
     "dev": "concurrently -n Admin,Public -c magenta,blue \"pnpm run dev:adminApi\" \"pnpm run dev:publicApi\""
-
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
@@ -102,8 +99,10 @@
     ],
     "moduleNameMapper": {
       "^apiLibs/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
+      "^apiLibs/cart-management(|/.*)$": "<rootDir>/libs/cart-management/src/$1",
       "^apiLibs/categories(|/.*)$": "<rootDir>/libs/categories/src/$1",
       "^apiLibs/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^apiLibs/order-management(|/.*)$": "<rootDir>/libs/order-management/src/$1",
       "^apiLibs/prisma-setup(|/.*)$": "<rootDir>/libs/prisma-setup/src/$1",
       "^apiLibs/products(|/.*)$": "<rootDir>/libs/products/src/$1",
       "^src/(.*)$": "<rootDir>/src/$1"
