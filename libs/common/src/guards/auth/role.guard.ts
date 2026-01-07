@@ -6,7 +6,10 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { AuthPayload } from 'apiLibs/common/models/auth/auth.interface';
+import {
+  AdminAuthPayload,
+  UserAuthPayload,
+} from 'apiLibs/common/models/auth/auth.interface';
 import { IsPublic } from 'apiLibs/common/decorators/is-public.decorator';
 import { Reflector } from '@nestjs/core';
 
@@ -20,7 +23,7 @@ export class RoleGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest<Request>();
 
-    const user = request['user'] as AuthPayload;
+    const user = request['user'] as AdminAuthPayload | UserAuthPayload;
 
     if (!user) {
       throw new ForbiddenException('token required');

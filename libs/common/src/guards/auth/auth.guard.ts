@@ -9,7 +9,10 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { AuthPayload } from 'apiLibs/common/models/auth/auth.interface';
+import {
+  UserAuthPayload,
+  AdminAuthPayload,
+} from 'apiLibs/common/models/auth/auth.interface';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { Reflector } from '@nestjs/core';
 import { IsPublic } from 'apiLibs/common/decorators/is-public.decorator';
@@ -35,7 +38,9 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync<AuthPayload>(token, {
+      const payload = await this.jwtService.verifyAsync<
+        AdminAuthPayload | UserAuthPayload
+      >(token, {
         secret: this.config.get<string>('JWT_SECRET'),
       });
       request['user'] = payload;

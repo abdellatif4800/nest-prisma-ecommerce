@@ -11,22 +11,19 @@ import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
-import { IsPublic } from 'apiLibs/common';
 
 @Controller('auth')
-export class AuthController {
+export class AuthPublicController {
   constructor(private readonly authService: AuthService) {}
 
-  @IsPublic(true)
   @Post('registration')
   create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+    return this.authService.createUser(createAuthDto);
   }
 
-  @IsPublic(true)
   @Post('login')
   findOne(@Body() loginAuthDto: LoginAuthDto) {
-    return this.authService.findOne(loginAuthDto);
+    return this.authService.findUser(loginAuthDto);
   }
 
   // @Get()
