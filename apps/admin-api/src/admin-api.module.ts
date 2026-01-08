@@ -1,9 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from 'apiLibs/auth';
 import { CategoriesModule } from 'apiLibs/categories';
@@ -14,11 +9,13 @@ import { AuthGuard, RoleGuard } from 'apiLibs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { CartManagementModule } from 'apiLibs/cart-management';
 import { OrderManagementModule } from 'apiLibs/order-management';
+import { FileStorageModule } from 'apiLibs/file-storage';
 
 @Module({
   imports: [
     HealthModule,
     PrismaSetupModule,
+    FileStorageModule,
     AuthModule.register('admin'),
     ProductsModule.register('admin'),
     CategoriesModule.register('admin'),

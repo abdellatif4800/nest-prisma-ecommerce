@@ -65,6 +65,15 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
+    "file-storage": {
+      "type": "library",
+      "root": "libs/file-storage",
+      "entryFile": "index",
+      "sourceRoot": "libs/file-storage/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/file-storage/tsconfig.lib.json"
+      }
+    },
     "order-management": {
       "type": "library",
       "root": "libs/order-management",

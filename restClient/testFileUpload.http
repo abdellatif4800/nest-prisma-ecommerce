@@ -1,0 +1,49 @@
+### 
+
+@base = http://localhost:8001/adminApi
+
+
+### upload file
+
+POST {{base}}/file-storage/uploadFile HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
+Authorization: Bearer {{admin_token}}
+
+------WebKitFormBoundary
+Content-Disposition: form-data; name="file"; filename="sample2.png"
+Content-Type: image/png
+
+< ~/Pictures/wallpapers/Lofi - Anime Girl2.png
+
+------WebKitFormBoundary--
+###
+
+### create bucket
+POST {{base}}/file-storage/createBuckt
+Authorization: Bearer {{admin_token}}
+
+{
+    "bucketName":"products"
+}
+
+###
+
+### list buckets
+GET {{base}}/file-storage/listBuckets
+Authorization: Bearer {{admin_token}}
+
+###
+
+### get file
+GET {{base}}/file-storage/fileUrl/sample.png
+Authorization: Bearer {{admin_token}}
+
+
+
+###
+
+### list files in bucket
+GET {{base}}/file-storage/listFileInBucket/mybucket
+Authorization: Bearer {{admin_token}}
+
+

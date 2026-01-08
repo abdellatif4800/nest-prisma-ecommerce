@@ -7,10 +7,13 @@ import { CategoriesModule } from 'apiLibs/categories';
 import { PrismaSetupModule } from 'apiLibs/prisma-setup';
 import { CartManagementModule } from 'apiLibs/cart-management';
 import { OrderManagementModule } from 'apiLibs/order-management';
+import { FileStorageModule } from 'apiLibs/file-storage';
+
 @Module({
   imports: [
     HealthModule,
     PrismaSetupModule,
+    FileStorageModule,
     AuthModule.register('public'),
     ProductsModule.register('public'),
     CategoriesModule.register('public'),

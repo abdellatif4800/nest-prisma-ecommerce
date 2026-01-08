@@ -46,6 +46,12 @@
       "apiLibs/common/*": [
         "libs/common/src/*"
       ],
+      "apiLibs/file-storage": [
+        "libs/file-storage/src"
+      ],
+      "apiLibs/file-storage/*": [
+        "libs/file-storage/src/*"
+      ],
       "apiLibs/order-management": [
         "libs/order-management/src"
       ],

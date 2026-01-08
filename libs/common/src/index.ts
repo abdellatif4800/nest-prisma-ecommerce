@@ -11,3 +11,4 @@ export * from './guards/auth/role.guard';
 //------------------- Decorators ---------------------------
 export * from './decorators/is-public.decorator';
 export * from './decorators/current-user.decorator';
+export * from './decorators/minio.decorator';
