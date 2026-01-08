@@ -1,0 +1,38 @@
+### 
+
+@base = http://localhost:8000/api
+
+
+### add item to cart
+
+POST {{base}}/cart-management/addItem/user-id-101?variantID=variant-001 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{user_token}}
+
+
+### Get Cart
+
+GET {{base}}/cart-management/user-id-101 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{user_token}}
+
+
+### Increase Quantity
+
+PATCH {{base}}/cart-management/increaseQuantity/aeb60898-cd89-4d93-a4da-55b516a9658f HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{user_token}}
+
+
+### Decrease Quantity
+
+PATCH {{base}}/cart-management/decreaseQuantity/c5bc3206-dac8-40c9-abc1-638ea892c83e HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{user_token}}
+
+
+### Remove Item
+
+DELETE {{base}}/cart-management/154047d9-78be-49b4-97a1-0aacc9831103 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{user_token}}

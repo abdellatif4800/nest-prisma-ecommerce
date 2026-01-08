@@ -47,10 +47,10 @@ Authorization: Bearer {{admin_token}}
 
 ### Update Variant
 
-PATCH {{base}}/products/variants/407521d0-f6a7-4222-a395-e4633830caa3 HTTP/1.1
+PATCH {{base}}/products/variants/variant-001 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{admin_token}}
 
 {
-  "color": "Blue"
+  "stock": 5
 }

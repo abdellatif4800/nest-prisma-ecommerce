@@ -10,7 +10,7 @@ Content-Type: application/json
 Authorization: Bearer {{admin_token}}
 
 {
-  "category": "Electronics"
+  "category": "Cat 1"
 }
 
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 Authorization: Bearer {{admin_token}}
 
 {
-  "categoryId": "ffeaf190-cb8a-4c17-9539-22b623276978",
+  "categoryId": "dcad18ab-e928-4621-8476-1a95358f0c79",
   "subCategory": "subCat 1"
 }
 

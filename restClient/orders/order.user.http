@@ -1,0 +1,36 @@
+### 
+
+@base = http://localhost:8000/api
+
+
+### new order
+
+POST {{base}}/order-management/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{user_token}}
+
+{
+  "address": "address-101",
+  "paymentMethod": "COD"
+}
+
+
+### get orders
+
+GET {{base}}/order-management HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{user_token}}
+
+
+### candel order
+
+PATCH {{base}}/order-management/cancel/order_02 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{user_token}}
+
+
+### refund request order
+
+PATCH {{base}}/order-management/refundRequest/order_01 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{user_token}}
