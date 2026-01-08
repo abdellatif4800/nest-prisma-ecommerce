@@ -6,12 +6,13 @@ import { CartManagementUsersController } from './cart-management.users.controlle
 
 @Module({
   imports: [PrismaSetupModule],
+  exports: [CartManagementService],
   providers: [CartManagementService],
 })
 export class CartManagementModule {
-  static register(mode: 'public' | 'admin'): DynamicModule {
+  static register(mode: 'user' | 'admin'): DynamicModule {
     const controllers =
-      mode === 'public'
+      mode === 'user'
         ? [CartManagementUsersController]
         : [CartManagementAdminController];
 
