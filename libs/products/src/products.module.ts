@@ -6,6 +6,7 @@ import { ProductsPublicController } from './products.public.controller';
 
 @Module({
   imports: [PrismaSetupModule],
+  exports: [ProductsService],
   providers: [ProductsService],
 })
 export class ProductsModule {
