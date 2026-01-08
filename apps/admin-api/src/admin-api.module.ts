@@ -13,6 +13,7 @@ import { HealthModule } from './healthCheck/health.module';
 import { AuthGuard, RoleGuard } from 'apiLibs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { CartManagementModule } from 'apiLibs/cart-management';
+import { OrderManagementModule } from 'apiLibs/order-management';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CartManagementModule } from 'apiLibs/cart-management';
     ProductsModule.register('admin'),
     CategoriesModule.register('admin'),
     CartManagementModule.register('admin'),
+    OrderManagementModule.register('admin'),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

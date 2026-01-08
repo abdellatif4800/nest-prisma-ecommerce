@@ -4,7 +4,7 @@
   "sourceRoot": "apps/api/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack":false,
+    "webpack": false,
     "configFile": "webpack.config.js",
     "sourceMap": false,
     "watchAssets": false,
@@ -38,6 +38,15 @@
         "tsConfigPath": "libs/auth/tsconfig.lib.json"
       }
     },
+    "cart-management": {
+      "type": "library",
+      "root": "libs/cart-management",
+      "entryFile": "index",
+      "sourceRoot": "libs/cart-management/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/cart-management/tsconfig.lib.json"
+      }
+    },
     "categories": {
       "type": "library",
       "root": "libs/categories",
@@ -54,6 +63,15 @@
       "sourceRoot": "libs/common/src",
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    },
+    "order-management": {
+      "type": "library",
+      "root": "libs/order-management",
+      "entryFile": "index",
+      "sourceRoot": "libs/order-management/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/order-management/tsconfig.lib.json"
       }
     },
     "prisma-setup": {
