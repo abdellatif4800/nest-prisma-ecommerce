@@ -72,7 +72,6 @@ export class AuthService {
     if (!targetUser) throw new UnauthorizedException('no use with this email');
 
     const isPasswordMatch = await bcrypt.compare(password, targetUser.password);
-    log(password, targetUser.password, isPasswordMatch);
 
     if (!isPasswordMatch) throw new UnauthorizedException('password incorrect');
 

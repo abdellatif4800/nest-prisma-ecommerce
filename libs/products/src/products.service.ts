@@ -15,7 +15,7 @@ import { UpdateVariantDto } from './dto/update-variant.dto';
 
 @Injectable()
 export class ProductsService {
-  constructor(private prisma: PrismaSetupService) { }
+  constructor(private prisma: PrismaSetupService) {}
 
   async create(createProductDto: CreateProductDto) {
     const result = await this.prisma.product.create({

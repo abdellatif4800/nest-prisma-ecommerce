@@ -4,13 +4,11 @@ import {
   Get,
   Param,
   Post,
-  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Express, Response } from 'express';
-import { join } from 'path';
 import { FileStorageService } from './file-storage.service';
 
 @Controller('file-storage')

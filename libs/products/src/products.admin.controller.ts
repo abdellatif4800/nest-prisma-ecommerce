@@ -7,7 +7,7 @@ import { UpdateVariantDto } from './dto/update-variant.dto';
 
 @Controller('products')
 export class ProductsAdminController {
-  constructor(private readonly productsService: ProductsService) { }
+  constructor(private readonly productsService: ProductsService) {}
 
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
