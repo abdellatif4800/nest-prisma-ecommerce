@@ -12,22 +12,58 @@ import {
 } from 'apiLibs/common';
 import { CreateVariantDto } from './dto/create-variant.dto';
 import { UpdateVariantDto } from './dto/update-variant.dto';
+import { FileStorageService } from 'apiLibs/file-storage';
+import { log } from 'console';
 
 @Injectable()
 export class ProductsService {
-  constructor(private prisma: PrismaSetupService) {}
+  constructor(
+    private fileStorageService: FileStorageService,
+    private prisma: PrismaSetupService,
+  ) { }
 
-  async create(createProductDto: CreateProductDto) {
-    const result = await this.prisma.product.create({
-      data: {
-        ...createProductDto,
-        publish: false,
+  async create(
+    createProductDto: CreateProductDto,
+    createVariantDto: CreateVariantDto,
+    image: Express.Multer.File,
+  ) {
+    const createProductTransaction = await this.prisma.$transaction(
+      async (tx) => {
+        const newProd = await tx.product.create({
+          data: {
+            ...createProductDto,
+            publish: false,
+          },
+          include: {
+            variants: true,
+          },
+        });
+        const variantImage = await this.fileStorageService.uploadFile(
+          image,
+          'variants',
+        );
+        log(newProd.id);
+        const newVariant = await tx.productVariant.create({
+          data: {
+            ...createVariantDto,
+            productId: newProd.id,
+            imageUrl: variantImage,
+          },
+        });
+
+        return await tx.product.update({
+          where: { id: newProd.id },
+          data: {
+            defaultVariantId: newVariant.id,
+          },
+          include: {
+            variants: true,
+          },
+        });
       },
-      include: {
-        variants: true,
-      },
-    });
-    return result;
+    );
+
+    return createProductTransaction;
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
@@ -89,10 +125,19 @@ export class ProductsService {
   }
 
   //----------------------------------------------------------
-  async createVariant(createVariantDto: CreateVariantDto) {
+  async createVariant(
+    createVariantDto: CreateVariantDto,
+    image: Express.Multer.File,
+  ) {
+    const variantImage = await this.fileStorageService.uploadFile(
+      image,
+      'variants',
+    );
+
     const result = await this.prisma.productVariant.create({
       data: {
         ...createVariantDto,
+        imageUrl: variantImage,
       },
     });
     return result;

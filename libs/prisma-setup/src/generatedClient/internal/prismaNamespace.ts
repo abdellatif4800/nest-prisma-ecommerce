@@ -1168,9 +1168,9 @@ export const ProductScalarFieldEnum = {
   price: 'price',
   discount: 'discount',
   rate: 'rate',
-  imageUrl: 'imageUrl',
   publish: 'publish',
   subCategoryId: 'subCategoryId',
+  defaultVariantId: 'defaultVariantId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1184,6 +1184,8 @@ export const ProductVariantScalarFieldEnum = {
   size: 'size',
   stock: 'stock',
   price: 'price',
+  imageUrl: 'imageUrl',
+  publish: 'publish',
   productId: 'productId'
 } as const
 

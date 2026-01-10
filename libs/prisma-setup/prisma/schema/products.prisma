@@ -8,14 +8,17 @@ model Product {
   price       Float
   discount    Float?
   rate        Float?
-  imageUrl    String?
+
   publish     Boolean @default(false)
   
   // Relations
   subCategoryId String
   subCategory   SubCategory @relation(fields: [subCategoryId], references: [id])
 
-  variants   ProductVariant[]
+  variants ProductVariant[] @relation("ProductVariants")
+
+  defaultVariantId String?         @unique
+  defaultVariant   ProductVariant? @relation("DefaultVariant", fields: [defaultVariantId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt
@@ -30,14 +33,18 @@ model ProductVariant{
   size      String
   stock     Int
   price     Float? // optional override price per variant
+  imageUrl    String?
+
+  publish     Boolean @default(false)
 
   productId String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation("ProductVariants",  fields: [productId], references: [id])
 
   cartItems  CartItem[]
   orderItems OrderItem[]
 
   @@unique([productId, color, size]) // 🚨 prevent duplicate variants
+  productDefaultingFor Product? @relation("DefaultVariant")
 }
 
 model Category {

@@ -3,9 +3,10 @@ import { ProductsService } from './products.service';
 import { PrismaSetupModule } from 'apiLibs/prisma-setup';
 import { ProductsAdminController } from './products.admin.controller';
 import { ProductsPublicController } from './products.public.controller';
+import { FileStorageModule } from 'apiLibs/file-storage';
 
 @Module({
-  imports: [PrismaSetupModule],
+  imports: [PrismaSetupModule, FileStorageModule],
   exports: [ProductsService],
   providers: [ProductsService],
 })

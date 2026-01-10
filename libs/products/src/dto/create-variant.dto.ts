@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsString,
   IsNumber,
@@ -18,13 +19,17 @@ export class CreateVariantDto {
 
   @IsNumber()
   @Min(0)
+  @Type(() => Number)
   stock!: number;
 
   @IsNumber()
   @Min(0)
   @IsOptional()
+  @Type(() => Number)
   price?: number;
 
-  @IsUUID()
+  //@IsString()
+  @IsUUID() //for prod
+  @IsOptional()
   productId!: string;
 }
