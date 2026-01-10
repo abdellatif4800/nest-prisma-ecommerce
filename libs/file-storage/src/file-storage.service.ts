@@ -5,7 +5,7 @@ import * as Minio from 'minio';
 
 @Injectable()
 export class FileStorageService {
-  constructor(@InjectMinio() private readonly minioService: Minio.Client) {}
+  constructor(@InjectMinio() private readonly minioService: Minio.Client) { }
 
   async createBuckt(bucketName: string) {
     await this.minioService.makeBucket(bucketName);
@@ -14,6 +14,26 @@ export class FileStorageService {
 
   async bucketsList() {
     return await this.minioService.listBuckets();
+  }
+
+  async makeBucketPublic(bucketName: string) {
+    const policy = {
+      Version: '2012-10-17',
+      Statement: [
+        {
+          Sid: 'PublicRead',
+          Effect: 'Allow',
+          Principal: '*', // "*" means anyone (anonymous)
+          Action: ['s3:GetObject'], // Allow reading files
+          Resource: [`arn:aws:s3:::${bucketName}/*`], // All files in this bucket
+        },
+      ],
+    };
+
+    await this.minioService.setBucketPolicy(bucketName, JSON.stringify(policy));
+    const getPolicy = await this.minioService.getBucketPolicy(bucketName);
+
+    console.log(`Bucket policy file: ${getPolicy}`);
   }
 
   async listObjectsInBucket(bucketName: string): Promise<any[]> {
@@ -34,16 +54,16 @@ export class FileStorageService {
   }
 
   async uploadFile(file: Express.Multer.File, bucketName: string) {
-    const newFile = await this.minioService.putObject(
+    await this.minioService.putObject(
       bucketName,
       file.originalname,
       file.buffer,
       file.size,
-      function (err, etag) {
+      function(err, etag) {
         return console.log(err, etag);
       },
     );
-    log(newFile);
-    return newFile;
+
+    return this.getFile(file.originalname, bucketName);
   }
 }

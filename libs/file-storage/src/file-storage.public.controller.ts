@@ -11,7 +11,7 @@ export class FileStoragePublicController {
   }
 
   //--------------------get file----------------
-  @Get('fileUrl/:filename')
+  @Get('fileUrl/:bucketName/:filename')
   getFile(
     @Param('filename') filename: string,
     @Param('bucketName') bucketName: string,

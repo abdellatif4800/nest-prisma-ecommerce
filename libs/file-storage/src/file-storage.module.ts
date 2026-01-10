@@ -27,9 +27,9 @@ import { FileStoragePublicController } from './file-storage.public.controller';
   ],
 })
 export class FileStorageModule {
-  static register(mode: 'user' | 'admin'): DynamicModule {
+  static register(mode: 'public' | 'admin'): DynamicModule {
     const controllers =
-      mode === 'user'
+      mode === 'public'
         ? [FileStoragePublicController]
         : [FileStorageAdminController];
 
