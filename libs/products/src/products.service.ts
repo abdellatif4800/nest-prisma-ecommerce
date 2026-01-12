@@ -20,7 +20,7 @@ export class ProductsService {
   constructor(
     private fileStorageService: FileStorageService,
     private prisma: PrismaSetupService,
-  ) { }
+  ) {}
 
   async create(
     createProductDto: CreateProductDto,
@@ -74,6 +74,49 @@ export class ProductsService {
     });
   }
 
+  async findSingleProduct(prodId: string) {
+    const product = await this.prisma.product.findUnique({
+      where: { id: prodId },
+
+      include: {
+        variants: true,
+        defaultVariant: true,
+        subCategory: {
+          select: {
+            subCategory: true,
+            category: {
+              select: {
+                category: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!product) {
+      return null; // or throw NotFoundException in NestJS
+    }
+
+    const sizes = [...new Set(product.variants.map((v) => v.size))];
+    const colors = [...new Set(product.variants.map((v) => v.color))];
+    const images = [
+      ...new Set(product.variants.map((v) => v.imageUrl).filter(Boolean)),
+    ];
+
+    const stockStats = await this.getStockTotals(product.id);
+
+    return {
+      product: {
+        ...product,
+        sizes,
+        colors,
+        images,
+        stockStats,
+      },
+    };
+  }
+
   async findProducts(filters: productsFiltersParams) {
     const where: ProductWhereInput = {};
 
@@ -100,15 +143,12 @@ export class ProductsService {
       where.publish = filters.publish;
     }
 
-    if (filters.id != undefined) {
-      where.id = filters.id;
-    }
-
     const result = await this.prisma.product.findMany({
       where: where,
 
       include: {
         variants: true,
+        defaultVariant: true,
         subCategory: {
           select: {
             subCategory: true,
@@ -121,7 +161,30 @@ export class ProductsService {
         },
       },
     });
-    return result;
+
+    const productsWithOptions = await Promise.all(
+      result.map(async (product) => {
+        const sizes = [...new Set(product.variants.map((v) => v.size))];
+        const colors = [...new Set(product.variants.map((v) => v.color))];
+        const images = [
+          ...new Set(product.variants.map((v) => v.imageUrl).filter(Boolean)),
+        ];
+
+        const stockStats = await this.getStockTotals(product.id);
+
+        return {
+          ...product,
+          sizes,
+          colors,
+          images,
+          stockStats,
+        };
+      }),
+    );
+
+    return {
+      products: productsWithOptions,
+    };
   }
 
   //----------------------------------------------------------
@@ -188,5 +251,38 @@ export class ProductsService {
       },
     });
     return result;
+  }
+
+  //-----------------------------------------------------------
+  async getStockTotals(productId: string) {
+    const [byColor, bySize, totalSum] = await Promise.all([
+      this.prisma.productVariant.groupBy({
+        by: ['color'],
+        where: { productId },
+        _sum: { stock: true },
+      }),
+      this.prisma.productVariant.groupBy({
+        by: ['size'],
+        where: { productId },
+        _sum: { stock: true },
+      }),
+      this.prisma.productVariant.aggregate({
+        where: { productId },
+        _sum: { stock: true },
+      }),
+    ]);
+
+    return {
+      productId,
+      totalGlobalStock: totalSum._sum.stock ?? 0,
+      stockByColor: byColor.map((item) => ({
+        color: item.color,
+        total: item._sum.stock ?? 0,
+      })),
+      stockBySize: bySize.map((item) => ({
+        size: item.size,
+        total: item._sum.stock ?? 0,
+      })),
+    };
   }
 }

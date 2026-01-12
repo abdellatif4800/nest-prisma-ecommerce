@@ -46,4 +46,14 @@ export class ProductsPublicController {
       size,
     });
   }
+
+  @Get(':prodId')
+  findOne(@Param('prodId') prodId: string) {
+    return this.productsService.findSingleProduct(prodId);
+  }
+
+  @Get('getStockTotals/:productId')
+  getStockTotals(@Param('productId') productId: string) {
+    return this.productsService.getStockTotals(productId);
+  }
 }
