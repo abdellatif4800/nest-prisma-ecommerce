@@ -1,6 +1,18 @@
 export interface productsFiltersParams {
   minPrice?: number;
   maxPrice?: number;
+
+  minRate?: number;
+  maxRate?: number;
+
+  minDiscount?: number;
+  maxDiscount?: number;
+
+  // pagination
+  page?: number; // for offset-based
+  limit?: number;
+  cursor?: string;
+
   subCategory?: string;
   search?: string;
   publish?: boolean;

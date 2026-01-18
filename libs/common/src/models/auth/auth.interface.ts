@@ -9,7 +9,7 @@ interface BaseAuthPayload {
 
 export interface UserAuthPayload extends BaseAuthPayload {
   role: 'user';
-  cartID: string;
+  cartID: string | null;
 }
 
 export interface AdminAuthPayload extends BaseAuthPayload {
