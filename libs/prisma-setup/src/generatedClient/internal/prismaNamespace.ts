@@ -1120,6 +1120,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const CartScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  total: 'total',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1144,7 +1145,10 @@ export const OrderScalarFieldEnum = {
   status: 'status',
   address: 'address',
   paymentMethod: 'paymentMethod',
+  paymentStatus: 'paymentStatus',
+  paymentIntentId: 'paymentIntentId',
   createdAt: 'createdAt',
+  arriveAt: 'arriveAt',
   updatedAt: 'updatedAt'
 } as const
 
@@ -1184,7 +1188,7 @@ export const ProductVariantScalarFieldEnum = {
   size: 'size',
   stock: 'stock',
   price: 'price',
-  imageUrl: 'imageUrl',
+  imageFileName: 'imageFileName',
   publish: 'publish',
   productId: 'productId'
 } as const
@@ -1265,6 +1269,20 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'String[]'
  */
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 

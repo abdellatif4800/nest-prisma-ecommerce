@@ -13,9 +13,14 @@ model Order {
   total         Float
   status        String  @default("pending")
   address       String?
+  
   paymentMethod String?
+  paymentStatus String? @default("pending")
+  paymentIntentId String? //from stripe 
 
   createdAt DateTime @default(now())
+  arriveAt DateTime
+
   updatedAt DateTime @updatedAt
 
   @@map("Orders")

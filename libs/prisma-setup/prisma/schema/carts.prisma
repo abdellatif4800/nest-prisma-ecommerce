@@ -10,6 +10,9 @@ model Cart {
   // Relations: Changed from embedded type to One-to-Many model
   items CartItem[]
 
+  total     Decimal  @default(0)
+
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

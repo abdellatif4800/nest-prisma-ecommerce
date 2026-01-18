@@ -33,7 +33,7 @@ model ProductVariant{
   size      String
   stock     Int
   price     Float? // optional override price per variant
-  imageUrl    String?
+  imageFileName   String?
 
   publish     Boolean @default(false)
 
