@@ -7,26 +7,31 @@ import {
   UseGuards,
   Post,
   Patch,
+  BadRequestException,
 } from '@nestjs/common';
 import { CartManagementService } from './cart-management.service';
-import { AuthGuard } from 'apiLibs/common';
+import { AuthGuard, CurrentUser } from 'apiLibs/common';
+import type { UserAuthPayload } from 'apiLibs/common';
 
 @Controller('cart-management')
 @UseGuards(AuthGuard)
 export class CartManagementUsersController {
   constructor(private readonly cartManagementService: CartManagementService) {}
 
-  @Get(':userID')
-  findOne(@Param('userID') userID: string) {
-    return this.cartManagementService.findCart(userID);
+  @Get('')
+  findOne(@CurrentUser() user: UserAuthPayload) {
+    return this.cartManagementService.findCart(user.sub);
   }
 
-  @Post('addItem/:userID')
+  @Post('addItem/:variantID')
   addItem(
-    @Param('userID') userID: string,
-    @Query('variantID') variantID: string,
+    @CurrentUser() user: UserAuthPayload,
+    @Param('variantID') variantID: string,
   ) {
-    return this.cartManagementService.addItemToCart({ userID, variantID });
+    return this.cartManagementService.addItemToCart({
+      userID: user.sub,
+      variantID,
+    });
   }
 
   @Patch('increaseQuantity/:itemId')
@@ -39,9 +44,17 @@ export class CartManagementUsersController {
     return this.cartManagementService.decreaseQuantity(itemId);
   }
 
-  @Delete(':itemId')
+  @Delete('deleteItem/:itemId')
   removeItem(@Param('itemId') itemId: string) {
     return this.cartManagementService.removeItem(itemId);
+  }
+
+  @Delete('clearCart')
+  clearCart(@CurrentUser() user: UserAuthPayload) {
+    if (!user?.cartID) {
+      throw new BadRequestException('Cart ID is required');
+    }
+    return this.cartManagementService.clearCart(user?.cartID);
   }
 
   // @Patch(':id')
