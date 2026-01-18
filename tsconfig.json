@@ -58,6 +58,12 @@
       "apiLibs/order-management/*": [
         "libs/order-management/src/*"
       ],
+      "apiLibs/payment-management": [
+        "libs/payment-management/src"
+      ],
+      "apiLibs/payment-management/*": [
+        "libs/payment-management/src/*"
+      ],
       "apiLibs/prisma-setup": [
         "libs/prisma-setup/src"
       ],

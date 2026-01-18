@@ -7,8 +7,7 @@
     "webpack": false,
     "configFile": "webpack.config.js",
     "sourceMap": false,
-    "watchAssets": false,
-    "tsConfigPath": "apps/api/tsconfig.app.json"
+    "watchAssets": false
   },
   "projects": {
     "admin-api": {
@@ -81,6 +80,15 @@
       "sourceRoot": "libs/order-management/src",
       "compilerOptions": {
         "tsConfigPath": "libs/order-management/tsconfig.lib.json"
+      }
+    },
+    "payment-management": {
+      "type": "library",
+      "root": "libs/payment-management",
+      "entryFile": "index",
+      "sourceRoot": "libs/payment-management/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/payment-management/tsconfig.lib.json"
       }
     },
     "prisma-setup": {

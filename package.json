@@ -19,7 +19,10 @@
     "test:e2e": "jest --config ./apps/api/test/jest-e2e.json",
     "dev:adminApi": "NODE_OPTIONS='--max-old-space-size=512' nest start --watch admin-api",
     "dev:publicApi": "NODE_OPTIONS='--max-old-space-size=512' nest start --watch api",
-    "dev": "concurrently -n Admin,Public -c magenta,blue \"pnpm run dev:adminApi\" \"pnpm run dev:publicApi\""
+    "dev": "concurrently -n Admin,Public -c magenta,blue \"pnpm run dev:adminApi\" \"pnpm run dev:publicApi\"",
+    "seedWithRawSql": "sh ./libs/prisma-setup/src/seed/seedWithRawSql/seedWithRawSql.sh",
+    "prisma:generate":"prisma generate",
+    "prisma:migrate":"prisma migrate dev"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
@@ -110,6 +113,7 @@
       "^apiLibs/common(|/.*)$": "<rootDir>/libs/common/src/$1",
       "^apiLibs/file-storage(|/.*)$": "<rootDir>/libs/file-storage/src/$1",
       "^apiLibs/order-management(|/.*)$": "<rootDir>/libs/order-management/src/$1",
+      "^apiLibs/payment-management(|/.*)$": "<rootDir>/libs/payment-management/src/$1",
       "^apiLibs/prisma-setup(|/.*)$": "<rootDir>/libs/prisma-setup/src/$1",
       "^apiLibs/products(|/.*)$": "<rootDir>/libs/products/src/$1",
       "^src/(.*)$": "<rootDir>/src/$1"
