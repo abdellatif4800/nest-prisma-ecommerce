@@ -29,7 +29,7 @@ export class CreateProductDto {
   @IsString()
   @IsUrl()
   @IsOptional()
-  imageUrl?: string;
+  imageFileName?: string;
 
   @IsBoolean()
   @IsOptional()

@@ -3,6 +3,6 @@ import { CreateProductDto } from './create-product.dto';
 import { IsString } from 'class-validator';
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {
-  @IsString()
-  defaultVariantId;
+  // @IsString()
+  // defaultVariantId;
 }

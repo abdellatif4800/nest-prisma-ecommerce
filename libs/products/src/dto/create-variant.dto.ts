@@ -6,6 +6,7 @@ import {
   IsUUID,
   Min,
   MinLength,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateVariantDto {
@@ -28,8 +29,16 @@ export class CreateVariantDto {
   @Type(() => Number)
   price?: number;
 
-  //@IsString()
-  @IsUUID() //for prod
+  @IsString()
+  //@IsUUID() //for prod
   @IsOptional()
   productId!: string;
+
+  @IsString()
+  @IsOptional()
+  imageFileName?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  publish?: boolean;
 }

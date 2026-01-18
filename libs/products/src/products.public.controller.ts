@@ -3,20 +3,39 @@ import { ProductsService } from './products.service';
 
 @Controller('products')
 export class ProductsPublicController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) { }
 
   @Get()
   findAll(
     @Query('minPrice') minPrice?: number,
     @Query('maxPrice') maxPrice?: number,
+
+    @Query('minDiscount') minDiscount?: number,
+    @Query('maxDiscount') maxDiscount?: number,
+
+    @Query('minRate') minRate?: number,
+    @Query('maxRate') maxRate?: number,
+
+    @Query('cursor') cursor?: string,
+    @Query('limit') limit?: number,
+
     @Query('subCategory') subCategory?: string,
+
     @Query('search') search?: string,
+
     @Query('publish') publish?: boolean,
+
     @Query('id') id?: string,
   ) {
     return this.productsService.findProducts({
+      cursor,
+      limit,
       minPrice,
       maxPrice,
+      minRate,
+      maxRate,
+      minDiscount,
+      maxDiscount,
       subCategory,
       search,
       publish,
