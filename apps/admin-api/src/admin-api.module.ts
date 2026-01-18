@@ -10,12 +10,14 @@ import { APP_GUARD } from '@nestjs/core';
 import { CartManagementModule } from 'apiLibs/cart-management';
 import { OrderManagementModule } from 'apiLibs/order-management';
 import { FileStorageModule } from 'apiLibs/file-storage';
+import { PaymentManagementModule } from 'apiLibs/payment-management';
 
 @Module({
   imports: [
     HealthModule,
     PrismaSetupModule,
-    FileStorageModule,
+    FileStorageModule.register('admin'),
+    PaymentManagementModule.forRootAsync('admin'),
     AuthModule.register('admin'),
     ProductsModule.register('admin'),
     CategoriesModule.register('admin'),
@@ -38,4 +40,4 @@ import { FileStorageModule } from 'apiLibs/file-storage';
     },
   ],
 })
-export class AdminApiModule {}
+export class AdminApiModule { }

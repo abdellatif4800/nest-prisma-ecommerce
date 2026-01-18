@@ -15,7 +15,7 @@ export class HealthController {
     private http: HttpHealthIndicator,
     private prismaHealth: PrismaHealthIndicator,
     private prisma: PrismaSetupService,
-  ) {}
+  ) { }
 
   @IsPublic(true)
   @Get('prismaCheck')
@@ -39,10 +39,7 @@ export class HealthController {
     try {
       const result = await this.health.check([
         () =>
-          this.http.pingCheck(
-            'api-test',
-            'http://localhost:8001/adminApi/health/ping',
-          ),
+          this.http.pingCheck('api-test', 'http://localhost:8001/health/ping'),
       ]);
       Logger.log('Api is UP');
       return result;
