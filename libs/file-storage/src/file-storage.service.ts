@@ -5,7 +5,7 @@ import * as Minio from 'minio';
 
 @Injectable()
 export class FileStorageService {
-  constructor(@InjectMinio() private readonly minioService: Minio.Client) { }
+  constructor(@InjectMinio() private readonly minioService: Minio.Client) {}
 
   async createBuckt(bucketName: string) {
     await this.minioService.makeBucket(bucketName);
@@ -33,6 +33,7 @@ export class FileStorageService {
     await this.minioService.setBucketPolicy(bucketName, JSON.stringify(policy));
     const getPolicy = await this.minioService.getBucketPolicy(bucketName);
 
+    return getPolicy;
     console.log(`Bucket policy file: ${getPolicy}`);
   }
 
@@ -59,7 +60,7 @@ export class FileStorageService {
       file.originalname,
       file.buffer,
       file.size,
-      function(err, etag) {
+      function (err, etag) {
         return console.log(err, etag);
       },
     );
