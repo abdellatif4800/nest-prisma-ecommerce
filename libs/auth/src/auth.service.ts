@@ -13,7 +13,7 @@ import { Role, PrismaSetupService } from 'apiLibs/prisma-setup';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserAuthPayload, AdminAuthPayload } from 'apiLibs/common';
-import { log } from 'node:console';
+import { log, trace } from 'node:console';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +35,7 @@ export class AuthService {
     const newUser = this.prisma.user.create({
       data: {
         ...userData,
-        id: 'user-101', //for dev only
+        // id: 'user-101', //for dev only
 
         password: await bcrypt.hash(password, 10),
 
@@ -67,6 +67,9 @@ export class AuthService {
 
     const targetUser = await this.prisma.user.findUnique({
       where: { email: email },
+      include: {
+        cart: true,
+      },
     });
 
     if (!targetUser) throw new UnauthorizedException('no use with this email');
@@ -80,11 +83,12 @@ export class AuthService {
       username: targetUser.username,
       role: 'user',
       email: targetUser.email,
-      cartID: 'adasd',
+      cartID: targetUser.cart?.id || null,
     };
 
-    if (isPasswordMatch)
+    if (isPasswordMatch) {
       return { access_token: await this.jwtService.signAsync(payload) };
+    }
   }
   ///------------------------ADMIN-----------------------------------------------
   async createAdmin(createAuthDto: CreateAuthDto) {
