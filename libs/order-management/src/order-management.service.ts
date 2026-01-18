@@ -18,51 +18,31 @@ import { log } from 'console';
 import { ProductsService } from 'apiLibs/products';
 import { OrderWhereInput } from 'apiLibs/prisma-setup/generatedClient/models';
 import { OrdersFiltersParams } from 'apiLibs/common';
+import { PaymentManagementService } from 'apiLibs/payment-management';
+import type { UserAuthPayload } from 'apiLibs/common';
 
 @Injectable()
 export class OrderManagementService {
   constructor(
     private prisma: PrismaSetupService,
     private cartservice: CartManagementService,
-  ) {}
+    private paymentService: PaymentManagementService,
+  ) { }
 
-  async create(
-    userId: string,
-    createOrderManagementDto: CreateOrderManagementDto,
-  ) {
-    const { address, paymentMethod } = createOrderManagementDto;
-
+  async restockAndClearCart(userId: string, orderId: string) {
     const targetCart = await this.cartservice.findCart(userId);
 
-    const totalPrice = targetCart.items.reduce((acc, item) => {
-      return acc + item.quantity * (item.variant.price ?? 0);
-    }, 0);
-
-    const newOrderTransaction = this.prisma.$transaction(async (tx) => {
-      const newOrder = await tx.order.create({
-        data: {
-          userId: userId,
-          total: totalPrice,
-          status: 'pending',
-          address: address,
-          paymentMethod: paymentMethod,
-
-          items: {
-            create: targetCart.items.map((cartItem) => ({
-              variant: {
-                connect: { id: cartItem.variant.id },
-              },
-              quantity: cartItem.quantity,
-              snapshotPrice: cartItem.variant.price ?? 0,
-            })),
-          },
+    return this.prisma.$transaction(async (tx) => {
+      //update Order Payment status
+      await tx.order.update({
+        where: {
+          id: orderId,
         },
-
-        include: {
-          items: true,
+        data: {
+          paymentStatus: 'paid',
+          status: 'processing',
         },
       });
-
       //---- update stock ------
       for (const item of targetCart.items) {
         await tx.productVariant.update({
@@ -83,10 +63,163 @@ export class OrderManagementService {
           cartId: targetCart.id,
         },
       });
-
-      return newOrder;
     });
-    return newOrderTransaction;
+  }
+
+  async create(
+    user: UserAuthPayload,
+    createOrderManagementDto: CreateOrderManagementDto,
+  ) {
+    const { address, paymentMethod } = createOrderManagementDto;
+
+    const targetCart = await this.cartservice.findCart(user.sub);
+
+    const totalPrice = targetCart.items.reduce((acc, item) => {
+      return acc + item.quantity * (item.variant.price ?? 0);
+    }, 0);
+
+    if (targetCart.items.length === 0)
+      throw new NotFoundException('no items in cart ');
+
+    if (paymentMethod === 'COD') {
+      //Cash on delivery
+      const newOrderForCOD = this.prisma.$transaction(async (tx) => {
+        try {
+          for (const item of targetCart.items) {
+            const variant = await tx.productVariant.findUnique({
+              where: { id: item.variant.id },
+              select: { stock: true, id: true },
+            });
+
+            if (!variant || variant.stock < item.quantity) {
+              throw new BadRequestException(
+                `Insufficient stock for item: ${item.variant.id}`,
+              );
+            }
+          }
+          const newOrder = await tx.order.create({
+            data: {
+              userId: user.sub,
+              total: totalPrice,
+              status: 'processing',
+              address: address,
+              paymentMethod: paymentMethod,
+              arriveAt: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days
+              paymentStatus: 'COD',
+
+              items: {
+                create: targetCart.items.map((cartItem) => ({
+                  variant: {
+                    connect: { id: cartItem.variant.id },
+                  },
+                  quantity: cartItem.quantity,
+                  snapshotPrice: cartItem.variant.price ?? 0,
+                })),
+              },
+            },
+
+            include: {
+              items: true,
+            },
+          });
+
+          //---- update stock ------
+          for (const item of targetCart.items) {
+            await tx.productVariant.update({
+              where: {
+                id: item.variant.id,
+              },
+              data: {
+                stock: {
+                  decrement: item.quantity,
+                },
+              },
+            });
+          }
+
+          //---- clear cart -----
+          await tx.cartItem.deleteMany({
+            where: {
+              cartId: targetCart.id,
+            },
+          });
+
+          return newOrder;
+        } catch (err: any) {
+          log(err);
+          throw err;
+        }
+      });
+
+      return newOrderForCOD;
+    }
+
+    if (paymentMethod === 'by card') {
+      const newOrderForPaymentIntent = this.prisma.$transaction(async (tx) => {
+        for (const item of targetCart.items) {
+          const variant = await tx.productVariant.findUnique({
+            where: { id: item.variant.id },
+            select: { stock: true, id: true },
+          });
+
+          if (!variant || variant.stock < item.quantity) {
+            // Use BadRequest or UnprocessableEntity for logic errors
+            throw new BadRequestException(
+              `Insufficient stock for item: ${item.variant.id}`,
+            );
+          }
+        }
+        const newOrder = await tx.order.create({
+          data: {
+            userId: user.sub,
+            total: totalPrice,
+            status: 'pending',
+            address: address,
+            paymentMethod: paymentMethod,
+            arriveAt: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days
+            paymentStatus: 'wait_for_payment',
+
+            items: {
+              create: targetCart.items.map((cartItem) => ({
+                variant: {
+                  connect: { id: cartItem.variant.id },
+                },
+                quantity: cartItem.quantity,
+                snapshotPrice: cartItem.variant.price ?? 0,
+              })),
+            },
+          },
+
+          include: {
+            items: true,
+          },
+        });
+
+        if (!user.cartID) {
+          throw new Error('User has no cart ID');
+        }
+
+        const newPaymentIntent = await this.paymentService.createPaymentIntent(
+          totalPrice,
+          'usd',
+          user.sub,
+          user.cartID,
+          newOrder.id,
+        );
+
+        return {
+          order: await tx.order.update({
+            where: { id: newOrder.id },
+            data: {
+              paymentIntentId: newPaymentIntent.id,
+            },
+          }),
+          paymentIntentClientSecret: newPaymentIntent.client_secret,
+        };
+      });
+
+      return newOrderForPaymentIntent;
+    }
   }
 
   async findUserOrders(userId: string, filters: OrdersFiltersParams) {
@@ -119,7 +252,25 @@ export class OrderManagementService {
     const orders = await this.prisma.order.findMany({
       where: where,
       include: {
-        items: true,
+        items: {
+          select: {
+            quantity: true,
+            variant: {
+              select: {
+                color: true,
+                size: true,
+                price: true,
+                imageFileName: true,
+                publish: true,
+                id: true,
+                product: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc', // or 'asc' for oldest first
       },
     });
 
@@ -150,7 +301,7 @@ export class OrderManagementService {
       async (tx) => {
         const cancelledOrder = await tx.order.update({
           where: { id: orderId },
-          data: { status: 'cancelled' },
+          data: { status: 'cancelld' },
         });
 
         for (const item of order.items) {

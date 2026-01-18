@@ -20,17 +20,14 @@ import type { UserAuthPayload } from 'apiLibs/common';
 export class OrderManagementUserController {
   constructor(
     private readonly orderManagementService: OrderManagementService,
-  ) {}
+  ) { }
 
   @Post()
   create(
     @CurrentUser() user: UserAuthPayload,
     @Body() createOrderManagementDto: CreateOrderManagementDto,
   ) {
-    return this.orderManagementService.create(
-      user.sub,
-      createOrderManagementDto,
-    );
+    return this.orderManagementService.create(user, createOrderManagementDto);
   }
 
   @Get()
