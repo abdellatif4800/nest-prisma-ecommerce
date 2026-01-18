@@ -8,12 +8,14 @@ import { PrismaSetupModule } from 'apiLibs/prisma-setup';
 import { CartManagementModule } from 'apiLibs/cart-management';
 import { OrderManagementModule } from 'apiLibs/order-management';
 import { FileStorageModule } from 'apiLibs/file-storage';
+import { PaymentManagementModule } from 'apiLibs/payment-management';
 
 @Module({
   imports: [
     HealthModule,
     PrismaSetupModule,
-    FileStorageModule,
+    FileStorageModule.register('public'),
+    PaymentManagementModule.forRootAsync('user'),
     AuthModule.register('public'),
     ProductsModule.register('public'),
     CategoriesModule.register('public'),
@@ -27,4 +29,4 @@ import { FileStorageModule } from 'apiLibs/file-storage';
   controllers: [],
   providers: [],
 })
-export class ApiModule {}
+export class ApiModule { }

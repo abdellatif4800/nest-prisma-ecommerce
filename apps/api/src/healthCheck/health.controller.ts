@@ -14,7 +14,7 @@ export class HealthController {
     private http: HttpHealthIndicator,
     private prismaHealth: PrismaHealthIndicator,
     private prisma: PrismaSetupService,
-  ) {}
+  ) { }
 
   @Get('prismaCheck')
   @HealthCheck()
@@ -36,10 +36,7 @@ export class HealthController {
     try {
       const result = await this.health.check([
         () =>
-          this.http.pingCheck(
-            'api-test',
-            'http://localhost:8000/api/health/ping',
-          ),
+          this.http.pingCheck('api-test', 'http://localhost:8000/health/ping'),
       ]);
       Logger.log('Api is UP');
       return result;

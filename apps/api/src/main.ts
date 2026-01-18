@@ -8,11 +8,13 @@ async function bootstrap() {
       json: true,
       colors: true,
     }),
+    rawBody: true,
   });
+  app.enableCors();
 
   // ---------------
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
+  // const globalPrefix = 'api';
+  // app.setGlobalPrefix(globalPrefix);
 
   // ---------------
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
@@ -22,8 +24,6 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
-  );
+  Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 bootstrap();
