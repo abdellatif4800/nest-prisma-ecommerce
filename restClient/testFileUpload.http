@@ -1,41 +1,40 @@
 ### 
 
-@base = http://localhost:8001/adminApi
 
 
 ### upload file
 
-POST {{base}}/file-storage/uploadFile HTTP/1.1
+POST {{adminBase}}/file-storage/uploadFile/variants HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
 Authorization: Bearer {{admin_token}}
 
 ------WebKitFormBoundary
-Content-Disposition: form-data; name="file"; filename="sample2.png"
+Content-Disposition: form-data; name="file"; filename="sample3.png"
 Content-Type: image/png
 
-< ~/Pictures/wallpapers/Lofi - Anime Girl2.png
+< ~/Pictures/wallpapers/Night monochrome.jpg
 
 ------WebKitFormBoundary--
 ###
 
 ### create bucket
-POST {{base}}/file-storage/createBuckt
+POST {{adminBase}}/file-storage/createBuckt
 Authorization: Bearer {{admin_token}}
 
 {
-    "bucketName":"products"
+    "bucketName":"variants"
 }
 
 ###
 
 ### list buckets
-GET {{base}}/file-storage/listBuckets
+GET {{adminBase}}/file-storage/listBuckets
 Authorization: Bearer {{admin_token}}
 
 ###
 
 ### get file
-GET {{base}}/file-storage/fileUrl/sample.png
+GET {{base}}/file-storage/fileUrl/variants/variant-002.png
 Authorization: Bearer {{admin_token}}
 
 
@@ -43,7 +42,14 @@ Authorization: Bearer {{admin_token}}
 ###
 
 ### list files in bucket
-GET {{base}}/file-storage/listFileInBucket/mybucket
+GET {{base}}/file-storage/listFileInBucket/variants
 Authorization: Bearer {{admin_token}}
+
+###
+
+### make  bucket public
+POST {{adminBase}}/file-storage/makeBucketPublic/variants
+Authorization: Bearer {{admin_token}}
+
 
 

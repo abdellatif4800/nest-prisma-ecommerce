@@ -1,0 +1,56 @@
+### 
+
+
+### create intent
+
+POST {{base}}/payment/create-payment-intent HTTP/1.1
+Authorization: Bearer {{user_token}}
+
+{
+  "amount": 300,
+  "currency": "usd"
+}
+
+
+### test webhook
+
+POST {{base}}/payment/webhook HTTP/1.1
+
+
+### create new one
+
+POST https://api.stripe.com/v1/webhook_endpoints HTTP/1.1
+Authorization: Bearer {{stripeSK}}
+Content-Type: application/x-www-form-urlencoded
+
+url=https://tea-columnists-stakeholders-textbook.trycloudflare.com/api/payment/webhook&
+enabled_events[]=payment_intent.succeeded
+
+
+### retrive
+
+GET https://api.stripe.com/v1/webhook_endpoints/we_1SpvI1H05IPbx08PNggkuFYj HTTP/1.1
+Authorization: Bearer {{stripeSK}}
+
+
+### List webhooks
+
+GET https://api.stripe.com/v1/webhook_endpoints HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{stripeSK}}
+
+
+### update webhook
+
+POST https://api.stripe.com/v1/webhook_endpoints/we_1SpvI1H05IPbx08PNggkuFYj HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{stripeSK}}
+
+url=https://declare-heel-trailers-saskatchewan.trycloudflare.com/api/payment/webhook&
+enabled_events[]=payment_intent.succeeded
+
+
+### delete webhook
+
+DELETE https://api.stripe.com/v1/webhook_endpoints/we_1SqOF1H05IPbx08PFyZHzLJW HTTP/1.1
+Authorization: Bearer {{stripeSK}}

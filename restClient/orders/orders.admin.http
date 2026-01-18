@@ -1,28 +1,26 @@
 ### 
 
-@base = http://localhost:8001/adminApi
-
 
 ### get orders
 
-GET {{base}}/order-management?id=order_01 HTTP/1.1
+GET {{adminBase}}/order-management HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{admin_token}}
 
 
 ### update order
 
-PATCH {{base}}/order-management/order_01 HTTP/1.1
+PATCH {{adminBase}}/order-management/bec3288d-3031-49ad-b795-c4a84cb2453a HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{admin_token}}
 
 {
-  "status": "return_approved"
+  "status": "delivered"
 }
 
 
 ### finish refund
 
-POST {{base}}/order-management/finishRefund/order_01 HTTP/1.1
+POST {{adminBase}}/order-management/finishRefund/order_01 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{admin_token}}

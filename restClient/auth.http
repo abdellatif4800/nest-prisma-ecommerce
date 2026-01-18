@@ -1,8 +1,5 @@
 ### 
 
-@adminBase = http://localhost:8001/adminApi
-@base = http://localhost:8000/api
-
 
 ### Registration
 
@@ -22,8 +19,8 @@ POST {{base}}/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "manual@example.com",
-  "password": "qweasdzxc123"
+  "email": "john@example.com",
+  "password": "password123"
 }
 
 > {%
@@ -54,8 +51,8 @@ POST {{adminBase}}/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "manualAdmin@example.com",
-  "password": "qweasdzxc123",
+  "email": "joeadmin@example.com",
+  "password": "password123",
   "role": "admin"
 }
 

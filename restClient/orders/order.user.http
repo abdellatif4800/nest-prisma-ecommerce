@@ -1,7 +1,5 @@
 ### 
 
-@base = http://localhost:8000/api
-
 
 ### new order
 
@@ -11,7 +9,7 @@ Authorization: Bearer {{user_token}}
 
 {
   "address": "address-101",
-  "paymentMethod": "COD"
+  "paymentMethod": "by card"
 }
 
 
@@ -31,6 +29,6 @@ Authorization: Bearer {{user_token}}
 
 ### refund request order
 
-PATCH {{base}}/order-management/refundRequest/order_01 HTTP/1.1
+PATCH {{base}}/order-management/refundRequest/bec3288d-3031-49ad-b795-c4a84cb2453a HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{user_token}}

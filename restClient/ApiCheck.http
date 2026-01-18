@@ -1,8 +1,5 @@
 ### 
 
-@adminBase = http://localhost:8001/adminApi
-@base = http://localhost:8000/api
-
 
 ### API
 

@@ -1,15 +1,25 @@
 ### 
 
-@base = http://localhost:8000/api
+
+### Find Products
+
+GET {{base}}/products/prod-009 HTTP/1.1
+Content-Type: application/json
 
 
 ### Find Products
 
-GET {{base}}/products HTTP/1.1
+GET {{base}}/products?cursor=prod-001&limit=2&subCategory=sub-men-tops HTTP/1.1
 Content-Type: application/json
 
 
 ### Find Variants
 
-GET {{base}}/products/variants?productId=cd2a4872-0a5c-4b9d-b370-142fe7ae8862 HTTP/1.1
+GET {{base}}/products/variants HTTP/1.1
+Content-Type: application/json
+
+
+### Find Variants
+
+GET {{base}}/products/getStockTotals/prod-001 HTTP/1.1
 Content-Type: application/json
